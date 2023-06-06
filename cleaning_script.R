@@ -1,3 +1,6 @@
+# The goal of this script is to combine the 8 datasets on international tourism into one master dataset.
+# They will be combined using pivot_longer to make the data easy to use to make data visualizations in the future.
+
 # Link to download the data: https://data.worldbank.org/indicator/st.int.arvl
 # I changed the names of the csv files after I downloaded them for ease of use
 
