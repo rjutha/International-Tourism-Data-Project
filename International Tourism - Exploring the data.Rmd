@@ -1,0 +1,71 @@
+---
+title: "International Tourism - Exploring the Data"
+author: "Rahim Jutha"
+date: "2023-06-06"
+output: html_document
+---
+
+# Description
+
+The goal of this script is to explore the data and develop a story line for the data.
+
+The main components of storytelling with data are:
+
+- Understanding and setting the context
+- Exploring multiple angles
+- Using compelling visualizations
+- Using varied data sources
+- Having a consistent narrative
+
+The narrative for this data could be:
+- Focusing on a single country
+- Looking at which countries rank highest on different metrics
+
+We can answer questions about outbound traffic and inbound traffic related to tourism.
+
+Simple questions we can answer:
+
+- Where are tourists travelling?
+- What countries are increasing in popularity? (using historical data)
+- Which countries rely on tourism? (percentage of their gdp)
+- What is the population in relation to the number of tourists?
+- Which tourists spend the most money?
+- Is there a correlation between GDP and inbound/outbound tourists?
+
+# Load Packages
+```{r}
+library(tidyverse)
+library(janitor)
+library(highcharter)
+```
+
+# Load Data
+```{r}
+df <- read_csv('data/International_Tourism_Dataset.csv') %>%
+  clean_names()
+```
+
+# Chloropleth map
+```{r}
+df %>%
+  filter(
+    indicator_name == 'International tourism, number of arrivals',
+    year == 2016) %>%
+  rename(iso3 = country_code) %>%
+  hcmap(
+    map = 'custom/world-robinson-lowres',
+    download_map_data = TRUE,
+    value = "value",
+    joinBy = c('iso-a3','iso3')
+  ) %>%
+  hc_colorAxis(
+    stops = color_stops(colors = viridisLite::inferno(10, begin = 0.1)),
+    type = "logarithmic"
+  )
+
+df %>%
+  filter(
+    indicator_name == 'International tourism, number of arrivals',
+    year == 2016) %>%
+  arrange(-value) -> x
+```
