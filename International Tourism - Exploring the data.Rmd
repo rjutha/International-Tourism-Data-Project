@@ -60,7 +60,9 @@ df %>%
   ) %>%
   hc_colorAxis(
     stops = color_stops(colors = viridisLite::inferno(10, begin = 0.1)),
-    type = "logarithmic"
+    type = "linear",
+    min = 0,
+    max = 250000000
   )
 
 df %>%
