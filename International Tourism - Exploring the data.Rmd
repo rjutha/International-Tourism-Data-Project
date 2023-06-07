@@ -50,7 +50,7 @@ df <- read_csv('data/International_Tourism_Dataset.csv') %>%
 df %>%
   filter(
     indicator_name == 'International tourism, number of arrivals',
-    year == 2016) %>%
+    year == 2000) %>%
   rename(iso3 = country_code) %>%
   hcmap(
     map = 'custom/world-robinson-lowres',
@@ -60,14 +60,9 @@ df %>%
   ) %>%
   hc_colorAxis(
     stops = color_stops(colors = viridisLite::inferno(10, begin = 0.1)),
-    type = "linear",
-    min = 0,
-    max = 250000000
+    max = 10^8,
+    labels = list(
+      overflow = 'allow'
+    )
   )
-
-df %>%
-  filter(
-    indicator_name == 'International tourism, number of arrivals',
-    year == 2016) %>%
-  arrange(-value) -> x
 ```

@@ -6,6 +6,8 @@
 
 # Tidyverse Functions for general data manipulation
 library(tidyverse)
+# country_code Function to get iso codes
+library(countrycode)
 
 # setting the working directory to the source file
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
@@ -25,7 +27,7 @@ file_names <- c(
 # function that combines the yearly data into 1 single column
 clean_data <- function(file_name){
   # read the csv file
-  df <- read_csv(paste0('data/raw_files/', file_name), skip = 3)
+  df <- read_csv(paste0('data/raw_files/', file_name), skip = 4)
   
   # obtain the year for the oldest record
   min_year <-
@@ -42,13 +44,25 @@ clean_data <- function(file_name){
     parse_number() %>%
     max(na.rm = TRUE) %>% 
     as.character()
+    
   
   # Use pivot_longer to combine the year rows
+  # use countrycode function to get country names and to remove regions from the data.
   df %>%
     pivot_longer(
       cols = min_year:max_year,
       names_to = "year") %>%
     select(-starts_with('...')) %>%
+    mutate(iso3c = countrycode(`Country Code`, "iso3c", "iso3c")) %>%
+    filter(!is.na(iso3c)) %>%
+    select(
+      `Country Name`,
+      `Country Code`,
+      `iso3c`,
+      `Indicator Name`,
+      `Indicator Code`,
+      `year`,
+      `value`) %>%
     return()
 }
 
