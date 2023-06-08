@@ -43,6 +43,8 @@ library(highcharter)
 ```{r}
 df <- read_csv('data/International_Tourism_Dataset.csv') %>%
   clean_names()
+data(worldgeojson, package = "highcharter")
+world_map <- download_map_data(url = "custom/world-robinson-lowres", showinfo = F)
 ```
 
 # Chloropleth map
@@ -50,13 +52,18 @@ df <- read_csv('data/International_Tourism_Dataset.csv') %>%
 df %>%
   filter(
     indicator_name == 'International tourism, number of arrivals',
-    year == 2000) %>%
+    year == 2005) %>%
   rename(iso3 = country_code) %>%
+  mutate(label = number(value, big.mark = ",")) %>%
   hcmap(
     map = 'custom/world-robinson-lowres',
     download_map_data = TRUE,
     value = "value",
-    joinBy = c('iso-a3','iso3')
+    name = 'Number of Arriving Tourists',
+    joinBy = c('iso-a3','iso3'),
+    tooltip = list(
+      pointFormat = "{point.country_name}: {point.label}"
+    )
   ) %>%
   hc_colorAxis(
     stops = color_stops(colors = viridisLite::inferno(10, begin = 0.1)),
@@ -64,5 +71,8 @@ df %>%
     labels = list(
       overflow = 'allow'
     )
-  )
+  ) %>%
+  hc_title(text = 'Which countries recieve the most Tourist') %>%
+  hc_subtitle(text = 'blah blah blah') %>%
+  hc_caption(text = 'blah')
 ```
