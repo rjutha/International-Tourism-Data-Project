@@ -1,5 +1,6 @@
 # The goal of this script is to combine the 8 datasets on international tourism into one master dataset.
 # They will be combined using pivot_longer to make the data easy to use to make data visualizations in the future.
+# The script also makes a short version of the data all combined into one csv
 
 # Link to download the data: https://data.worldbank.org/indicator/st.int.arvl
 # I changed the names of the csv files after I downloaded them for ease of use
@@ -25,9 +26,13 @@ file_names <- c(
 )
 
 # function that combines the yearly data into 1 single column
-clean_data <- function(file_name){
-  # read the csv file
-  df <- read_csv(paste0('data/raw_files/', file_name), skip = 4)
+clean_data_long <- function(file_name){
+  # read the csv file and remove columns
+  df <- read_csv(paste0('data/raw_files/', file_name), skip = 4) %>%
+    select(
+      -(`1960`:`1999`),
+      -starts_with('...'),
+      -`Indicator Code`)
   
   # obtain the year for the oldest record
   min_year <-
@@ -47,27 +52,69 @@ clean_data <- function(file_name){
     
   
   # Use pivot_longer to combine the year rows
-  # use countrycode function to get country names and to remove regions from the data.
+  # use country_code function to get country names and to remove regions from the data.
   df %>%
+    mutate(iso3c = countrycode(`Country Code`, "iso3c", "iso3c")) %>%
+    filter(!is.na(iso3c)) %>%
+    select(-`Country Code`) %>%
     pivot_longer(
       cols = min_year:max_year,
       names_to = "year") %>%
-    select(-starts_with('...')) %>%
+    rename(country = `Country Name`,
+           indicator = `Indicator Name`) %>%
+    select(
+      country,
+      iso3c,
+      indicator,
+      year,
+      value) %>%
+    return()
+}
+
+# function that combines the datasets into one csv
+clean_data_short <- function(file_name){
+  
+  # read the csv file and remove columns
+  df <- read_csv(paste0('data/raw_files/', file_name), skip = 4) %>%
+    select(
+      -(`1960`:`1999`),
+      -starts_with('...'),
+      -`Indicator Code`)
+  
+  # obtain the year for the oldest record
+  min_year <-
+    df %>%
+    names() %>%
+    parse_number() %>%
+    min(na.rm = TRUE) %>%
+    as.character()
+  
+  # obtain the year for the newest record
+  max_year <-
+    df %>%
+    names() %>%
+    parse_number() %>%
+    max(na.rm = TRUE) %>% 
+    as.character()
+  
+  # use country_code function to get country names and to remove regions from the data.
+  df %>%
     mutate(iso3c = countrycode(`Country Code`, "iso3c", "iso3c")) %>%
     filter(!is.na(iso3c)) %>%
-    select(
-      `Country Name`,
-      `Country Code`,
-      `iso3c`,
-      `Indicator Name`,
-      `Indicator Code`,
-      `year`,
-      `value`) %>%
+    select(-`Country Code`) %>%
+    rename(country = `Country Name`,
+           indicator = `Indicator Name`) %>%
+    select(country, iso3c, indicator, min_year:max_year) %>%
     return()
 }
 
 # run the clean_data function on each csv file
 # then combine them and save them to a new csv file
-map(file_names, clean_data) %>%
+
+map(file_names, clean_data_long) %>%
   bind_rows() %>%
-  write_csv('data/International_Tourism_Dataset.csv')
+  write_csv('data/International_Tourism_Dataset_Long.csv')
+
+map(file_names, clean_data_short) %>%
+  bind_rows() %>%
+  write_csv('data/International_Tourism_Dataset_Short.csv')

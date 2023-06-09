@@ -37,6 +37,7 @@ Simple questions we can answer:
 library(tidyverse)
 library(janitor)
 library(highcharter)
+library(scales)
 ```
 
 # Load Data
@@ -47,7 +48,7 @@ df <- read_csv('data/International_Tourism_Dataset.csv') %>%
 # world_map <- download_map_data(url = "custom/world-robinson-lowres", showinfo = F)
 ```
 
-# Chloropleth map
+# Chloropleth Maps
 ```{r}
 df %>%
   filter(
@@ -142,7 +143,7 @@ df %>%
     indicator_name == 'International tourism, receipts (current US$)',
     year == 2018) %>%
   rename(iso3 = country_code) %>%
-  mutate(label = number(value, big.mark = ",")) %>%
+  mutate(label = paste('$', number(value, big.mark = ","), 'USD')) %>%
   hcmap(
     map = 'custom/world-robinson-lowres',
     download_map_data = TRUE,
@@ -163,4 +164,17 @@ df %>%
   hc_title(text = 'Which countries earn the most from tourism?') %>%
   hc_subtitle(text = 'blah blah blah') %>%
   hc_caption(text = 'blah')
+```
+
+# Growth plots
+```{r}
+df %>%
+  filter(
+    indicator_name == 'International tourism, number of arrivals') %>%
+  mutate(growth_rate = (value - lag(value)) / lag(value),
+         label = percent(growth_rate, accuracy = 0.01)) %>%
+  filter(country_code == 'USA') %>%
+  ggplot(aes(x = year, y = growth_rate)) +
+  geom_line()
+
 ```

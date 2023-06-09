@@ -1,0 +1,63 @@
+---
+title: "International Tourism Dashboard"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(tidyverse)
+library(janitor)
+library(DT)
+library(forcats)
+
+df <- read_csv('data/International_Tourism_Dataset.csv') %>%
+  clean_names()
+
+test <- read_csv('data/raw_files/International tourism, expenditures (% of total imports).csv', skip = 4)
+```
+
+# Explore the data
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Chart A
+
+```{r}
+# df %>%
+#   mutate(
+#     country_name = as_factor(country_name),
+#     country_code = as_factor(country_code),
+#     iso3c = as_factor(iso3c),
+#     indicator_name = as_factor(indicator_name),
+#     indicator_code = as_factor(indicator_code)
+#   ) %>%
+
+
+test %>%
+datatable(
+  rownames = FALSE, 
+  options = list(pageLength = 5, scrollX = TRUE), 
+  class = 'white-space: nowrap',
+  filter = 'top',
+  plugins = 'scrolling')
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Chart B
+
+```{r}
+
+```
+
+### Chart C
+
+```{r}
+
+```
+
