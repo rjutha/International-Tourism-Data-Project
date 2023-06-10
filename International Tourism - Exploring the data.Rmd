@@ -42,7 +42,7 @@ library(scales)
 
 # Load Data
 ```{r}
-df <- read_csv('data/International_Tourism_Dataset.csv') %>%
+df <- read_csv('data/International_Tourism_Dataset_Long.csv') %>%
   clean_names()
 # data(worldgeojson, package = "highcharter")
 # world_map <- download_map_data(url = "custom/world-robinson-lowres", showinfo = F)
@@ -52,18 +52,17 @@ df <- read_csv('data/International_Tourism_Dataset.csv') %>%
 ```{r}
 df %>%
   filter(
-    indicator_name == 'International tourism, number of arrivals',
+    indicator == 'International tourism, number of arrivals',
     year == 2005) %>%
-  rename(iso3 = country_code) %>%
   mutate(label = number(value, big.mark = ",")) %>%
   hcmap(
     map = 'custom/world-robinson-lowres',
     download_map_data = TRUE,
     value = "value",
     name = 'Number of Arriving Tourists',
-    joinBy = c('iso-a3','iso3'),
+    joinBy = c('iso-a3','iso3c'),
     tooltip = list(
-      pointFormat = "{point.country_name}: {point.label}"
+      pointFormat = "{point.country}: {point.label}"
     )
   ) %>%
   hc_colorAxis(
@@ -81,18 +80,17 @@ df %>%
 ```{r}
 df %>%
   filter(
-    indicator_name == 'International tourism, number of departures',
+    indicator == 'International tourism, number of departures',
     year == 2015) %>%
-  rename(iso3 = country_code) %>%
   mutate(label = number(value, big.mark = ",")) %>%
   hcmap(
     map = 'custom/world-robinson-lowres',
     download_map_data = TRUE,
     value = "value",
     name = 'Number of Departing Tourists',
-    joinBy = c('iso-a3','iso3'),
+    joinBy = c('iso-a3','iso3c'),
     tooltip = list(
-      pointFormat = "{point.country_name}: {point.label}"
+      pointFormat = "{point.country}: {point.label}"
     )
   ) %>%
   hc_colorAxis(
@@ -110,18 +108,17 @@ df %>%
 ```{r}
 df %>%
   filter(
-    indicator_name == 'International tourism, number of departures',
+    indicator == 'International tourism, number of departures',
     year == 2015) %>%
-  rename(iso3 = country_code) %>%
   mutate(label = number(value, big.mark = ",")) %>%
   hcmap(
     map = 'custom/world-robinson-lowres',
     download_map_data = TRUE,
     value = "value",
     name = 'Number of Departing Tourists',
-    joinBy = c('iso-a3','iso3'),
+    joinBy = c('iso-a3','iso3c'),
     tooltip = list(
-      pointFormat = "{point.country_name}: {point.label}"
+      pointFormat = "{point.country}: {point.label}"
     )
   ) %>%
   hc_colorAxis(

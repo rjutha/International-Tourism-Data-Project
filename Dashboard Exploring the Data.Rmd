@@ -12,11 +12,14 @@ library(tidyverse)
 library(janitor)
 library(DT)
 library(forcats)
+library(highcharter)
+library(scales)
 
-df <- read_csv('data/International_Tourism_Dataset.csv') %>%
+df <- read_csv('data/International_Tourism_Dataset_Long.csv') %>%
   clean_names()
 
-test <- read_csv('data/raw_files/International tourism, expenditures (% of total imports).csv', skip = 4)
+test <- read_csv('data/International_Tourism_Dataset_Short.csv') %>%
+  filter(indicator == 'International tourism, expenditures (current US$)')
 ```
 
 # Explore the data
@@ -27,23 +30,31 @@ Column {data-width=650}
 ### Chart A
 
 ```{r}
-# df %>%
-#   mutate(
-#     country_name = as_factor(country_name),
-#     country_code = as_factor(country_code),
-#     iso3c = as_factor(iso3c),
-#     indicator_name = as_factor(indicator_name),
-#     indicator_code = as_factor(indicator_code)
-#   ) %>%
-
-
-test %>%
-datatable(
-  rownames = FALSE, 
-  options = list(pageLength = 5, scrollX = TRUE), 
-  class = 'white-space: nowrap',
-  filter = 'top',
-  plugins = 'scrolling')
+df %>%
+  filter(
+    indicator == 'International tourism, number of arrivals',
+    year == 2015) %>%
+  mutate(label = number(value, big.mark = ",")) %>%
+  hcmap(
+    map = 'custom/world-robinson-lowres',
+    download_map_data = TRUE,
+    value = "value",
+    name = 'Number of Arriving Tourists',
+    joinBy = c('iso-a3','iso3c'),
+    tooltip = list(
+      pointFormat = "{point.country}: {point.label}"
+    )
+  ) %>%
+  hc_colorAxis(
+    stops = color_stops(colors = viridisLite::inferno(10, begin = 0.1)),
+    max = 10^8,
+    labels = list(
+      overflow = 'allow'
+    )
+  ) %>%
+  hc_title(text = 'Which countries recieve the most Tourist') %>%
+  hc_subtitle(text = 'blah blah blah') %>%
+  hc_caption(text = 'blah')
 ```
 
 Column {data-width=350}
