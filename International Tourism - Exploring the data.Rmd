@@ -128,7 +128,7 @@ df %>%
       overflow = 'allow'
     )
   ) %>%
-  hc_title(text = 'Which countries depart the most for tourism') %>%
+  #hc_title(text = 'Which countries depart the most for tourism') %>%
   hc_subtitle(text = 'blah blah blah') %>%
   hc_caption(text = 'blah')
 ```
@@ -174,4 +174,39 @@ df %>%
   ggplot(aes(x = year, y = growth_rate)) +
   geom_line()
 
+```
+
+```{r}
+df %>%
+  filter(
+    indicator == 'International tourism, number of arrivals') %>%
+  group_by(country) %>%
+  mutate(growth_rate = (value - lag(value)) / lag(value),
+         label_gr = percent(growth_rate, accuracy = 0.01)) %>%
+  mutate(prev_year_value = lag(value)) %>%
+  ungroup() %>%
+  filter(year == 2020) %>%
+  filter(!is.na(growth_rate)) %>%
+  arrange(-prev_year_value) %>%
+  mutate(label_value = number(value, big.mark = ","),
+         label_pyv = number(prev_year_value, big.mark = ",")) %>%
+  slice_head(n= 10) %>%
+  mutate(country = as_factor(country)) %>%
+  hchart(
+    'bar',
+    hcaes(x = country,
+          y = growth_rate),
+    color = "#CC4248FF",
+    tooltip = list(
+      useHTML = TRUE,
+      pointFormat = 
+        "Growth Rate: {point.label}<br>2019 Tourists: {point.label_pyv}<br> 2020 Tourists: {point.label_value}"
+    )
+  ) %>%
+  hc_xAxis(
+    title = list(text = "")
+  ) %>%
+  hc_yAxis(
+    title = list(text = "Growth Rate")
+  )
 ```
