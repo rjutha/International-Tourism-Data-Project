@@ -24,7 +24,12 @@ test <- read_csv('data/International_Tourism_Dataset_Short.csv') %>%
 
 # Inbound Tourists 
 
-Column {.tabset .tabset-fade datawidth=750}
+Column {.sidebar data-width=200}
+-------------------------------------
+
+BLAH
+
+Column {.tabset .tabset-fade data-width=550}
 ------------------------------------- 
 
 ### Inbound Tourists 2020
@@ -143,7 +148,7 @@ df %>%
     tooltip = list(
       useHTML = TRUE,
       pointFormat = 
-        "Growth Rate: {point.label}<br>2019 Tourists: {point.label_pyv}<br> 2020 Tourists: {point.label_value}"
+        "Growth Rate: {point.label_gr}<br>2019 Tourists: {point.label_pyv}<br> 2020 Tourists: {point.label_value}"
     )
   ) %>%
   hc_xAxis(
@@ -157,7 +162,7 @@ df %>%
   )
 ```
 
-### Smallest Decreases
+### Aescending
 
 ```{r}
 df %>%
@@ -183,7 +188,7 @@ df %>%
     tooltip = list(
       useHTML = TRUE,
       pointFormat = 
-        "Growth Rate: {point.label}<br>2019 Tourists: {point.label_pyv}<br> 2020 Tourists: {point.label_value}"
+        "Growth Rate: {point.label_gr}<br>2019 Tourists: {point.label_pyv}<br> 2020 Tourists: {point.label_value}"
     )
   ) %>%
   hc_xAxis(
@@ -197,7 +202,7 @@ df %>%
   )
 ```
 
-### Largest Decreases
+### Descending
 
 ```{r}
 df %>%
@@ -223,7 +228,7 @@ df %>%
     tooltip = list(
       useHTML = TRUE,
       pointFormat = 
-        "Growth Rate: {point.label}<br>2019 Tourists: {point.label_pyv}<br> 2020 Tourists: {point.label_value}"
+        "Growth Rate: {point.label_gr}<br>2019 Tourists: {point.label_pyv}<br> 2020 Tourists: {point.label_value}"
     )
   ) %>%
   hc_xAxis(
@@ -239,8 +244,13 @@ df %>%
 
 # Outbound Tourists
 
-Column {.tabset .tabset-fade datawidth=800}
------------------------------------------------------------------------
+Column {.sidebar data-width=200}
+-------------------------------------
+
+BLAH
+
+Column {.tabset .tabset-fade data-width=550}
+--------------------------------------
 
 ### Outbound Tourists in 2020
 
@@ -326,11 +336,125 @@ df %>%
   hc_title(text = 'Which countries depart the most for tourism')
 ```
 
-Column {data-width=200}
+Column {.tabset .tabset-fade data-width=250}
 -----------------------------------------------------------------------
 
-### Chart C
+### 2019 Leaders
 
 ```{r}
+df %>%
+  filter(
+    indicator == 'International tourism, number of departures') %>%
+  group_by(country) %>%
+  mutate(growth_rate = (value - lag(value)) / lag(value),
+         label_gr = percent(growth_rate, accuracy = 0.01)) %>%
+  mutate(prev_year_value = lag(value)) %>%
+  ungroup() %>%
+  filter(year == 2020) %>%
+  filter(!is.na(growth_rate)) %>%
+  arrange(-prev_year_value) %>%
+  mutate(label_value = number(value, big.mark = ","),
+         label_pyv = number(prev_year_value, big.mark = ",")) %>%
+  slice_head(n= 10) %>%
+  mutate(country = as_factor(country)) %>%
+  hchart(
+    'bar',
+    hcaes(x = country,
+          y = growth_rate),
+    color = "#CC4248FF",
+    tooltip = list(
+      useHTML = TRUE,
+      pointFormat = 
+        "Growth Rate: {point.label_gr}<br>2019 Tourists: {point.label_pyv}<br> 2020 Tourists: {point.label_value}"
+    )
+  ) %>%
+  hc_xAxis(
+    title = list(text = "")
+  ) %>%
+  hc_yAxis(
+    title = list(text = "Percent Change")
+  ) %>%
+    hc_title(
+    text = 'Percent Change - 2019 to 2020'
+  )
+```
 
+### Aescending
+
+```{r}
+df %>%
+  filter(
+    indicator == 'International tourism, number of departures') %>%
+  group_by(country) %>%
+  mutate(growth_rate = (value - lag(value)) / lag(value),
+         label_gr = percent(growth_rate, accuracy = 0.01)) %>%
+  mutate(prev_year_value = lag(value)) %>%
+  ungroup() %>%
+  filter(year == 2020) %>%
+  filter(!is.na(growth_rate)) %>%
+  arrange(-growth_rate) %>%
+  mutate(label_value = number(value, big.mark = ","),
+         label_pyv = number(prev_year_value, big.mark = ",")) %>%
+  slice_head(n= 10) %>%
+  mutate(country = as_factor(country)) %>%
+  hchart(
+    'bar',
+    hcaes(x = country,
+          y = growth_rate),
+    color = "#CC4248FF",
+    tooltip = list(
+      useHTML = TRUE,
+      pointFormat = 
+        "Growth Rate: {point.label_gr}<br>2019 Tourists: {point.label_pyv}<br> 2020 Tourists: {point.label_value}"
+    )
+  ) %>%
+  hc_xAxis(
+    title = list(text = "")
+  ) %>%
+  hc_yAxis(
+    title = list(text = "Percent Change")
+  ) %>%
+    hc_title(
+    text = 'Percent Change - 2019 to 2020'
+  )
+```
+
+### Descending
+
+```{r}
+df %>%
+  filter(
+    indicator == 'International tourism, number of departures') %>%
+  group_by(country) %>%
+  mutate(growth_rate = (value - lag(value)) / lag(value),
+         label_gr = percent(growth_rate, accuracy = 0.01)) %>%
+  mutate(prev_year_value = lag(value)) %>%
+  ungroup() %>%
+  filter(year == 2020) %>%
+  filter(!is.na(growth_rate)) %>%
+  arrange(growth_rate) %>%
+  mutate(label_value = number(value, big.mark = ","),
+         label_pyv = number(prev_year_value, big.mark = ",")) %>%
+  slice_head(n= 10) %>%
+  mutate(country = as_factor(country)) %>%
+  hchart(
+    'bar',
+    hcaes(x = country,
+          y = growth_rate),
+    color = "#CC4248FF",
+    tooltip = list(
+      useHTML = TRUE,
+      pointFormat = 
+        "Growth Rate: {point.label_gr}<br>2019 Tourists: {point.label_pyv}<br> 2020 Tourists: {point.label_value}"
+    )
+  ) %>%
+  hc_xAxis(
+    title = list(text = "")
+  ) %>%
+  hc_yAxis(
+    title = list(text = "Percent Change")
+  ) %>%
+  hc_title(
+    text = 'Percent Change - 2019 to 2020'
+  )
 ```

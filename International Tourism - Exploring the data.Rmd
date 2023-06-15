@@ -137,7 +137,7 @@ df %>%
 ```{r}
 df %>%
   filter(
-    indicator_name == 'International tourism, receipts (current US$)',
+    indicator == 'International tourism, receipts (current US$)',
     year == 2018) %>%
   rename(iso3 = country_code) %>%
   mutate(label = paste('$', number(value, big.mark = ","), 'USD')) %>%
@@ -209,4 +209,11 @@ df %>%
   hc_yAxis(
     title = list(text = "Growth Rate")
   )
+```
+```{r}
+chloropleth_map(
+  df,
+  'International tourism, number of arrivals',
+  2018,
+  'Which countries recieve the most Tourists?')
 ```
