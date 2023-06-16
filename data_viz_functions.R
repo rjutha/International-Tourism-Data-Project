@@ -1,4 +1,6 @@
 library(tidyverse)
+library(highcharter)
+library(rlang)
 
 chloropleth_map <- function(df, ind, year_date, title, name){
   df %>%
@@ -41,7 +43,6 @@ chloropleth_map(
   'Which countries are loses',
   'Number of leaving tourists'
 )
-
 
 arrange_dir <- function(df, order_var, direction){
   order_var <- sym(order_var)
@@ -90,10 +91,3 @@ pc_bar_graph <- function(df, ind, order_var, direction){
         text = 'Percent Change - 2019 to 2020'
       )
 }
-
-pc_bar_graph(
-  df,
-  'International tourism, number of arrivals',
-  'percent_change',
-  'desc'
-)
