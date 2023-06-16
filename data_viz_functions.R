@@ -43,43 +43,18 @@ chloropleth_map(
 )
 
 
-df %>%
-  filter(
-    indicator == 'International tourism, number of arrivals') %>%
-  group_by(country) %>%
-  mutate(growth_rate = (value - lag(value)) / lag(value),
-         label_gr = percent(growth_rate, accuracy = 0.01)) %>%
-  mutate(prev_year_value = lag(value)) %>%
-  ungroup() %>%
-  filter(year == 2020) %>%
-  filter(!is.na(growth_rate)) %>%
-  arrange(-prev_year_value) %>%
-  mutate(label_value = number(value, big.mark = ","),
-         label_pyv = number(prev_year_value, big.mark = ",")) %>%
-  slice_head(n= 10) %>%
-  mutate(country = as_factor(country)) %>%
-  hchart(
-    'bar',
-    hcaes(x = country,
-          y = growth_rate),
-    color = "#CC4248FF",
-    tooltip = list(
-      useHTML = TRUE,
-      pointFormat = 
-        "Growth Rate: {point.label_gr}<br>2019 Tourists: {point.label_pyv}<br> 2020 Tourists: {point.label_value}"
-    )
-  ) %>%
-  hc_xAxis(
-    title = list(text = "")
-  ) %>%
-  hc_yAxis(
-    title = list(text = "Percent Change")
-  ) %>%
-  hc_title(
-    text = 'Percent Change - 2019 to 2020'
-  )
+arrange_dir <- function(df, order_var, direction){
+  order_var <- sym(order_var)
+  order_var <- enquo(order_var)
+  if(direction == 'desc'){
+    return(arrange(df, desc(!!order_var)))
+  }
+  if(direction == 'aesc'){
+    return(arrange(df, !!order_var))
+  }
+}
 
-pc_bar_graph <- function(df, ind, order_var, sort_fun){
+pc_bar_graph <- function(df, ind, order_var, direction){
   df %>%
     filter(indicator == ind) %>%
     group_by(country) %>%
@@ -88,7 +63,7 @@ pc_bar_graph <- function(df, ind, order_var, sort_fun){
     ungroup() %>%
     filter(year == 2020) %>%
     filter(!is.na(percent_change)) %>%
-    arrange(!!order_var, sort_fun(!!order_var)) %>%
+    arrange_dir(order_var, direction) %>%
     mutate(label_value = number(value, big.mark = ","),
            label_pyv = number(prev_year_value, big.mark = ","),
            label_pc = percent(percent_change, accuracy = 0.01)) %>%
@@ -119,6 +94,6 @@ pc_bar_graph <- function(df, ind, order_var, sort_fun){
 pc_bar_graph(
   df,
   'International tourism, number of arrivals',
-  sym("value"),
-  sort
+  'percent_change',
+  'desc'
 )
