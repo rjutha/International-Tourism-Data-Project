@@ -167,8 +167,6 @@ pc_bar_graph(df,
 
 # Tourism GDP
 
-# Explore the data
-
 Column {.sidebar data-width=250}
 -------------------------------------
 
@@ -176,6 +174,8 @@ BLAH 3
 
 Column {.tabset .tabset-fade data-width=375}
 -------------------------------------
+
+# Explore the data
 
 Column {.tabset .tabset-fade data-width=375}
 -------------------------------------
