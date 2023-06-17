@@ -2,6 +2,7 @@ library(tidyverse)
 library(highcharter)
 library(scales)
 library(rlang)
+library(DT)
 
 chloropleth_map <- function(df, ind, year_date, title, name){
   df %>%
@@ -76,4 +77,11 @@ pc_bar_graph <- function(df, ind, order_var, direction){
       hc_title(
         text = 'Percent Change - 2019 to 2020'
       )
+}
+
+display_table <- function(df, ind){
+  df %>%
+    filter(indicator == ind) %>%
+    select(-indicator) %>%
+    datatable(rownames = FALSE)
 }

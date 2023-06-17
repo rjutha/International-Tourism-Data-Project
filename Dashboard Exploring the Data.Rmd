@@ -20,8 +20,7 @@ source('data_viz_functions.R')
 df <- read_csv('data/International_Tourism_Dataset_Long.csv') %>%
   clean_names()
 
-test <- read_csv('data/International_Tourism_Dataset_Short.csv') %>%
-  filter(indicator == 'International tourism, expenditures (current US$)')
+df_short <- read_csv('data/International_Tourism_Dataset_Short.csv')
 ```
 
 # Inbound Tourists 
@@ -164,3 +163,36 @@ pc_bar_graph(df,
              'percent_change',
              'desc')
 ```
+
+
+# Tourism GDP
+
+# Explore the data
+
+Column {.sidebar data-width=200}
+-------------------------------------
+
+BLAH 3
+
+Column {.tabset .tabset-fade data-width=550}
+-------------------------------------
+
+### Inbound Tourists
+
+```{r}
+display_table(df_short, 'International tourism, number of arrivals')
+```
+
+### Outbound Tourists
+
+```{r}
+display_table(df_short, 'International tourism, number of departures')
+```
+
+### GDP
+
+```{r}
+display_table(df_short, 'International tourism, receipts (current US$)')
+```
+
+# References
