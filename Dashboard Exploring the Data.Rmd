@@ -25,12 +25,12 @@ df_short <- read_csv('data/International_Tourism_Dataset_Short.csv')
 
 # Inbound Tourists 
 
-Column {.sidebar data-width=200}
+Column {.sidebar data-width=250}
 -------------------------------------
 
 BLAH
 
-Column {.tabset .tabset-fade data-width=550}
+Column {.tabset .tabset-fade data-width=500}
 ------------------------------------- 
 
 ### Inbound Tourists 2020
@@ -96,12 +96,12 @@ pc_bar_graph(df,
 
 # Outbound Tourists
 
-Column {.sidebar data-width=200}
+Column {.sidebar data-width=250}
 -------------------------------------
 
 BLAH
 
-Column {.tabset .tabset-fade data-width=550}
+Column {.tabset .tabset-fade data-width=500}
 --------------------------------------
 
 ### Outbound Tourists in 2020
@@ -169,12 +169,15 @@ pc_bar_graph(df,
 
 # Explore the data
 
-Column {.sidebar data-width=200}
+Column {.sidebar data-width=250}
 -------------------------------------
 
 BLAH 3
 
-Column {.tabset .tabset-fade data-width=550}
+Column {.tabset .tabset-fade data-width=375}
+-------------------------------------
+
+Column {.tabset .tabset-fade data-width=375}
 -------------------------------------
 
 ### Inbound Tourists
