@@ -47,59 +47,21 @@ chloropleth_map(df,
 ### Inbound Tourists 2019
 
 ```{r}
-df %>%
-  filter(
-    indicator == 'International tourism, number of arrivals',
-    year == 2019) %>%
-  mutate(label = number(value, big.mark = ",")) %>%
-  hcmap(
-    map = 'custom/world-robinson-lowres',
-    download_map_data = TRUE,
-    value = "value",
-    name = 'Number of Arriving Tourists',
-    joinBy = c('iso-a3','iso3c'),
-    tooltip = list(
-      pointFormat = "{point.country}: {point.label}"
-    )
-  ) %>%
-  hc_colorAxis(
-    stops = color_stops(colors = viridisLite::inferno(10, begin = 0.1)),
-    max = 10^8,
-    labels = list(
-      overflow = 'allow'
-    )
-   ) %>%
-   hc_title(text = 'Which countries recieve the most Tourist')
-
+chloropleth_map(df,
+                'International tourism, number of arrivals',
+                2019,
+                'Which countries recieve the most Tourist',
+                'Number of Arriving Tourists')
 ```
 
 ### Inbound Tourists 2018
 
 ```{r}
-df %>%
-  filter(
-    indicator == 'International tourism, number of arrivals',
-    year == 2018) %>%
-  mutate(label = number(value, big.mark = ",")) %>%
-  hcmap(
-    map = 'custom/world-robinson-lowres',
-    download_map_data = TRUE,
-    value = "value",
-    name = 'Number of Arriving Tourists',
-    joinBy = c('iso-a3','iso3c'),
-    tooltip = list(
-      pointFormat = "{point.country}: {point.label}"
-    )
-  ) %>%
-  hc_colorAxis(
-    stops = color_stops(colors = viridisLite::inferno(10, begin = 0.1)),
-    max = 10^8,
-    labels = list(
-      overflow = 'allow'
-    )
-   ) %>%
-   hc_title(text = 'Which countries recieve the most Tourist')
-
+chloropleth_map(df,
+                'International tourism, number of arrivals',
+                2018,
+                'Which countries recieve the most Tourist',
+                'Number of Arriving Tourists')
 ```
 
 
@@ -109,121 +71,28 @@ Column {.tabset .tabset-fade data-width=250}
 ### 2019 Leaders
 
 ```{r}
-df %>%
-  filter(
-    indicator == 'International tourism, number of arrivals') %>%
-  group_by(country) %>%
-  mutate(growth_rate = (value - lag(value)) / lag(value),
-         label_gr = percent(growth_rate, accuracy = 0.01)) %>%
-  mutate(prev_year_value = lag(value)) %>%
-  ungroup() %>%
-  filter(year == 2020) %>%
-  filter(!is.na(growth_rate)) %>%
-  arrange(-prev_year_value) %>%
-  mutate(label_value = number(value, big.mark = ","),
-         label_pyv = number(prev_year_value, big.mark = ",")) %>%
-  slice_head(n= 10) %>%
-  mutate(country = as_factor(country)) %>%
-  hchart(
-    'bar',
-    hcaes(x = country,
-          y = growth_rate),
-    color = "#CC4248FF",
-    tooltip = list(
-      useHTML = TRUE,
-      pointFormat = 
-        "Growth Rate: {point.label_gr}<br>2019 Tourists: {point.label_pyv}<br> 2020 Tourists: {point.label_value}"
-    )
-  ) %>%
-  hc_xAxis(
-    title = list(text = "")
-  ) %>%
-  hc_yAxis(
-    title = list(text = "Percent Change")
-  ) %>%
-    hc_title(
-    text = 'Percent Change - 2019 to 2020'
-  )
+pc_bar_graph(df,
+             'International tourism, number of arrivals',
+             'value',
+             'desc')
 ```
 
 ### Aescending
 
 ```{r}
-df %>%
-  filter(
-    indicator == 'International tourism, number of arrivals') %>%
-  group_by(country) %>%
-  mutate(growth_rate = (value - lag(value)) / lag(value),
-         label_gr = percent(growth_rate, accuracy = 0.01)) %>%
-  mutate(prev_year_value = lag(value)) %>%
-  ungroup() %>%
-  filter(year == 2020) %>%
-  filter(!is.na(growth_rate)) %>%
-  arrange(-growth_rate) %>%
-  mutate(label_value = number(value, big.mark = ","),
-         label_pyv = number(prev_year_value, big.mark = ",")) %>%
-  slice_head(n= 10) %>%
-  mutate(country = as_factor(country)) %>%
-  hchart(
-    'bar',
-    hcaes(x = country,
-          y = growth_rate),
-    color = "#CC4248FF",
-    tooltip = list(
-      useHTML = TRUE,
-      pointFormat = 
-        "Growth Rate: {point.label_gr}<br>2019 Tourists: {point.label_pyv}<br> 2020 Tourists: {point.label_value}"
-    )
-  ) %>%
-  hc_xAxis(
-    title = list(text = "")
-  ) %>%
-  hc_yAxis(
-    title = list(text = "Percent Change")
-  ) %>%
-    hc_title(
-    text = 'Percent Change - 2019 to 2020'
-  )
+pc_bar_graph(df,
+             'International tourism, number of arrivals',
+             'percent_change',
+             'aesc')
 ```
 
 ### Descending
 
 ```{r}
-df %>%
-  filter(
-    indicator == 'International tourism, number of arrivals') %>%
-  group_by(country) %>%
-  mutate(growth_rate = (value - lag(value)) / lag(value),
-         label_gr = percent(growth_rate, accuracy = 0.01)) %>%
-  mutate(prev_year_value = lag(value)) %>%
-  ungroup() %>%
-  filter(year == 2020) %>%
-  filter(!is.na(growth_rate)) %>%
-  arrange(growth_rate) %>%
-  mutate(label_value = number(value, big.mark = ","),
-         label_pyv = number(prev_year_value, big.mark = ",")) %>%
-  slice_head(n= 10) %>%
-  mutate(country = as_factor(country)) %>%
-  hchart(
-    'bar',
-    hcaes(x = country,
-          y = growth_rate),
-    color = "#CC4248FF",
-    tooltip = list(
-      useHTML = TRUE,
-      pointFormat = 
-        "Growth Rate: {point.label_gr}<br>2019 Tourists: {point.label_pyv}<br> 2020 Tourists: {point.label_value}"
-    )
-  ) %>%
-  hc_xAxis(
-    title = list(text = "")
-  ) %>%
-  hc_yAxis(
-    title = list(text = "Percent Change")
-  ) %>%
-  hc_title(
-    text = 'Percent Change - 2019 to 2020'
-  )
+pc_bar_graph(df,
+             'International tourism, number of arrivals',
+             'percent_change',
+             'desc')
 ```
 
 # Outbound Tourists
@@ -239,85 +108,31 @@ Column {.tabset .tabset-fade data-width=550}
 ### Outbound Tourists in 2020
 
 ```{r}
-df %>%
-  filter(
-    indicator == 'International tourism, number of departures',
-    year == 2020) %>%
-  mutate(label = number(value, big.mark = ",")) %>%
-  hcmap(
-    map = 'custom/world-robinson-lowres',
-    download_map_data = TRUE,
-    value = "value",
-    name = 'Number of Departing Tourists',
-    joinBy = c('iso-a3','iso3c'),
-    tooltip = list(
-      pointFormat = "{point.country}: {point.label}"
-    )
-  ) %>%
-  hc_colorAxis(
-    stops = color_stops(colors = viridisLite::inferno(10, begin = 0.1)),
-    max = 10^8,
-    labels = list(
-      overflow = 'allow'
-    )
-  ) %>%
-  hc_title(text = 'Which countries depart the most for tourism')
+chloropleth_map(df,
+                'International tourism, number of departures',
+                2020,
+                'Which countries depart the most for tourism',
+                'Number of Departing Tourists')
 ```
 
 ### Outbound Tourists in 2019
 
 ```{r}
-df %>%
-  filter(
-    indicator == 'International tourism, number of departures',
-    year == 2019) %>%
-  mutate(label = number(value, big.mark = ",")) %>%
-  hcmap(
-    map = 'custom/world-robinson-lowres',
-    download_map_data = TRUE,
-    value = "value",
-    name = 'Number of Departing Tourists',
-    joinBy = c('iso-a3','iso3c'),
-    tooltip = list(
-      pointFormat = "{point.country}: {point.label}"
-    )
-  ) %>%
-  hc_colorAxis(
-    stops = color_stops(colors = viridisLite::inferno(10, begin = 0.1)),
-    max = 10^8,
-    labels = list(
-      overflow = 'allow'
-    )
-  ) %>%
-  hc_title(text = 'Which countries depart the most for tourism')
+chloropleth_map(df,
+                'International tourism, number of departures',
+                2019,
+                'Which countries depart the most for tourism',
+                'Number of Departing Tourists')
 ```
 
 ### Outbound Tourists in 2018
 
 ```{r}
-df %>%
-  filter(
-    indicator == 'International tourism, number of departures',
-    year == 2018) %>%
-  mutate(label = number(value, big.mark = ",")) %>%
-  hcmap(
-    map = 'custom/world-robinson-lowres',
-    download_map_data = TRUE,
-    value = "value",
-    name = 'Number of Departing Tourists',
-    joinBy = c('iso-a3','iso3c'),
-    tooltip = list(
-      pointFormat = "{point.country}: {point.label}"
-    )
-  ) %>%
-  hc_colorAxis(
-    stops = color_stops(colors = viridisLite::inferno(10, begin = 0.1)),
-    max = 10^8,
-    labels = list(
-      overflow = 'allow'
-    )
-  ) %>%
-  hc_title(text = 'Which countries depart the most for tourism')
+chloropleth_map(df,
+                'International tourism, number of departures',
+                2018,
+                'Which countries depart the most for tourism',
+                'Number of Departing Tourists')
 ```
 
 Column {.tabset .tabset-fade data-width=250}
@@ -326,119 +141,26 @@ Column {.tabset .tabset-fade data-width=250}
 ### 2019 Leaders
 
 ```{r}
-df %>%
-  filter(
-    indicator == 'International tourism, number of departures') %>%
-  group_by(country) %>%
-  mutate(growth_rate = (value - lag(value)) / lag(value),
-         label_gr = percent(growth_rate, accuracy = 0.01)) %>%
-  mutate(prev_year_value = lag(value)) %>%
-  ungroup() %>%
-  filter(year == 2020) %>%
-  filter(!is.na(growth_rate)) %>%
-  arrange(-prev_year_value) %>%
-  mutate(label_value = number(value, big.mark = ","),
-         label_pyv = number(prev_year_value, big.mark = ",")) %>%
-  slice_head(n= 10) %>%
-  mutate(country = as_factor(country)) %>%
-  hchart(
-    'bar',
-    hcaes(x = country,
-          y = growth_rate),
-    color = "#CC4248FF",
-    tooltip = list(
-      useHTML = TRUE,
-      pointFormat = 
-        "Growth Rate: {point.label_gr}<br>2019 Tourists: {point.label_pyv}<br> 2020 Tourists: {point.label_value}"
-    )
-  ) %>%
-  hc_xAxis(
-    title = list(text = "")
-  ) %>%
-  hc_yAxis(
-    title = list(text = "Percent Change")
-  ) %>%
-    hc_title(
-    text = 'Percent Change - 2019 to 2020'
-  )
+pc_bar_graph(df,
+             'International tourism, number of departures',
+             'value',
+             'desc')
 ```
 
 ### Aescending
 
 ```{r}
-df %>%
-  filter(
-    indicator == 'International tourism, number of departures') %>%
-  group_by(country) %>%
-  mutate(growth_rate = (value - lag(value)) / lag(value),
-         label_gr = percent(growth_rate, accuracy = 0.01)) %>%
-  mutate(prev_year_value = lag(value)) %>%
-  ungroup() %>%
-  filter(year == 2020) %>%
-  filter(!is.na(growth_rate)) %>%
-  arrange(-growth_rate) %>%
-  mutate(label_value = number(value, big.mark = ","),
-         label_pyv = number(prev_year_value, big.mark = ",")) %>%
-  slice_head(n= 10) %>%
-  mutate(country = as_factor(country)) %>%
-  hchart(
-    'bar',
-    hcaes(x = country,
-          y = growth_rate),
-    color = "#CC4248FF",
-    tooltip = list(
-      useHTML = TRUE,
-      pointFormat = 
-        "Growth Rate: {point.label_gr}<br>2019 Tourists: {point.label_pyv}<br> 2020 Tourists: {point.label_value}"
-    )
-  ) %>%
-  hc_xAxis(
-    title = list(text = "")
-  ) %>%
-  hc_yAxis(
-    title = list(text = "Percent Change")
-  ) %>%
-    hc_title(
-    text = 'Percent Change - 2019 to 2020'
-  )
+pc_bar_graph(df,
+             'International tourism, number of departures',
+             'percent_change',
+             'aesc')
 ```
 
 ### Descending
 
 ```{r}
-df %>%
-  filter(
-    indicator == 'International tourism, number of departures') %>%
-  group_by(country) %>%
-  mutate(growth_rate = (value - lag(value)) / lag(value),
-         label_gr = percent(growth_rate, accuracy = 0.01)) %>%
-  mutate(prev_year_value = lag(value)) %>%
-  ungroup() %>%
-  filter(year == 2020) %>%
-  filter(!is.na(growth_rate)) %>%
-  arrange(growth_rate) %>%
-  mutate(label_value = number(value, big.mark = ","),
-         label_pyv = number(prev_year_value, big.mark = ",")) %>%
-  slice_head(n= 10) %>%
-  mutate(country = as_factor(country)) %>%
-  hchart(
-    'bar',
-    hcaes(x = country,
-          y = growth_rate),
-    color = "#CC4248FF",
-    tooltip = list(
-      useHTML = TRUE,
-      pointFormat = 
-        "Growth Rate: {point.label_gr}<br>2019 Tourists: {point.label_pyv}<br> 2020 Tourists: {point.label_value}"
-    )
-  ) %>%
-  hc_xAxis(
-    title = list(text = "")
-  ) %>%
-  hc_yAxis(
-    title = list(text = "Percent Change")
-  ) %>%
-  hc_title(
-    text = 'Percent Change - 2019 to 2020'
-  )
+pc_bar_graph(df,
+             'International tourism, number of departures',
+             'percent_change',
+             'desc')
 ```
