@@ -13,8 +13,6 @@ chloropleth_map <- function(df, ind, year_date, title, name){
     value = "value",
     name = name,
     joinBy = c('iso-a3','iso3c'),
-    borderWidth = 0,
-    nullColor = "#d3d3d3",
     tooltip = list(
       pointFormat = "{point.country}: {point.label_v}"
     )
@@ -28,21 +26,6 @@ chloropleth_map <- function(df, ind, year_date, title, name){
     ) %>%
     hc_title(text = title)
 }
-
-chloropleth_map(
-  df,
-  'International tourism, number of arrivals',
-  2018,
-  'Which countries recieve the most Tourists?',
-  'Number of Arriving Tourists')
-
-chloropleth_map(
-  df,
-  'International tourism, number of departures',
-  2020,
-  'Which countries are loses',
-  'Number of leaving tourists'
-)
 
 arrange_dir <- function(df, order_var, direction){
   order_var <- sym(order_var)

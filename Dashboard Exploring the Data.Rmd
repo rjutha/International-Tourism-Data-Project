@@ -15,6 +15,8 @@ library(forcats)
 library(highcharter)
 library(scales)
 
+source('data_viz_functions.R')
+
 df <- read_csv('data/International_Tourism_Dataset_Long.csv') %>%
   clean_names()
 
@@ -35,29 +37,11 @@ Column {.tabset .tabset-fade data-width=550}
 ### Inbound Tourists 2020
 
 ```{r}
-df %>%
-  filter(
-    indicator == 'International tourism, number of arrivals',
-    year == 2020) %>%
-  mutate(label = number(value, big.mark = ",")) %>%
-  hcmap(
-    map = 'custom/world-robinson-lowres',
-    download_map_data = TRUE,
-    value = "value",
-    name = 'Number of Arriving Tourists',
-    joinBy = c('iso-a3','iso3c'),
-    tooltip = list(
-      pointFormat = "{point.country}: {point.label}"
-    )
-  ) %>%
-  hc_colorAxis(
-    stops = color_stops(colors = viridisLite::inferno(10, begin = 0.1)),
-    max = 10^8,
-    labels = list(
-      overflow = 'allow'
-    )
-  ) %>%
-  hc_title(text = 'Which countries recieve the most Tourist')
+chloropleth_map(df,
+                'International tourism, number of arrivals',
+                2020,
+                'Which countries recieve the most Tourist',
+                'Number of Arriving Tourists')
 ```
 
 ### Inbound Tourists 2019
