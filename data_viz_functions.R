@@ -1,5 +1,6 @@
 library(tidyverse)
 library(highcharter)
+library(scales)
 library(rlang)
 
 chloropleth_map <- function(df, ind, year_date, title, name){
@@ -42,7 +43,7 @@ pc_bar_graph <- function(df, ind, order_var, direction){
   df %>%
     filter(indicator == ind) %>%
     group_by(country) %>%
-    mutate(percent_change = (value - lag(value)) / lag(value),
+    mutate(percent_change = (value - lag(value)) / lag(value) * 100,
            prev_year_value = lag(value)) %>%
     ungroup() %>%
     filter(year == 2020) %>%
@@ -50,7 +51,7 @@ pc_bar_graph <- function(df, ind, order_var, direction){
     arrange_dir(order_var, direction) %>%
     mutate(label_value = number(value, big.mark = ","),
            label_pyv = number(prev_year_value, big.mark = ","),
-           label_pc = percent(percent_change, accuracy = 0.01)) %>%
+           label_pc = percent(percent_change, accuracy = 0.01, scale = 1)) %>%
     slice_head(n=10) %>%
     mutate(country = as_factor(country)) %>%
       hchart(
@@ -68,7 +69,9 @@ pc_bar_graph <- function(df, ind, order_var, direction){
         title = list(text = "")
       ) %>%
       hc_yAxis(
-        title = list(text = "Percent Change")
+        title = list(text = "Percent Change"),
+        labels = list(format = "{value}%"),
+        min = -100
       ) %>%
       hc_title(
         text = 'Percent Change - 2019 to 2020'
