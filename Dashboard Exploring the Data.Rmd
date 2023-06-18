@@ -172,8 +172,52 @@ Column {.sidebar data-width=250}
 
 BLAH 3
 
-Column {.tabset .tabset-fade data-width=375}
+Column {data-width=350}
 -------------------------------------
+
+### 1
+
+```{r}
+  df %>%
+    filter(indicator == 'International tourism, receipts (current US$)',
+         year %in% c(2019,2020)) %>%
+  group_by(year) %>%
+  slice_max(value, n = 10) %>%
+  hchart(
+    'bar',
+    hcaes(x = country,
+          y = value,
+          group = year),
+    pointWidth = 10,
+    groupPadding = 1,
+    pointPadding = 2
+    ) %>%
+  hc_colors(c("#0073C2FF", "#EFC000FF"))
+        
+```
+
+Column {data-width=350}
+-------------------------------------
+
+### 2
+
+```{r}
+ df %>%
+    filter(indicator == 'International tourism, receipts (current US$)',
+         year %in% c(2019,2020)) %>%
+  group_by(year) %>%
+  slice_max(value, n = 10) %>%
+  hchart(
+    'bar',
+    hcaes(x = country,
+          y = value,
+          group = year),
+    pointWidth = 10,
+    groupPadding = 1,
+    pointPadding = 2
+    ) %>%
+  hc_colors(c("#0073C2FF", "#EFC000FF"))
+```
 
 # Explore the data
 
