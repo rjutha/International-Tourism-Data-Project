@@ -177,27 +177,42 @@ Column {.tabset .tabset-fade data-width=375}
 
 # Explore the data
 
+Column {.sidebar data-width=250}
+-------------------------------------
+
+Blah 4
+
 Column {.tabset .tabset-fade data-width=375}
 -------------------------------------
 
 ### Inbound Tourists
 
 ```{r}
-display_table(df_short, 'International tourism, number of arrivals')
+display_table(df_short, 
+              'International tourism, number of arrivals',
+              'Blah Blah Blah World Bank Moment')
 ```
 
 ### Outbound Tourists
 
 ```{r}
-display_table(df_short, 'International tourism, number of departures')
+display_table(df_short, 'International tourism, number of departures',
+              'Blah Blah Blah World Bank Moment')
 ```
 
 ### GDP
 
 ```{r}
-display_table(df_short, 'International tourism, receipts (current US$)')
+display_table(df_short, 'International tourism, receipts (current US$)',
+              'Blah Blah Blah World Bank Moment')
 ```
 
 # References
 
+https://www.unwto.org/tourism-statistics/key-tourism-statistics
+
+https://datacatalog.worldbank.org/
+
 # About Me
+
+We the best Music!

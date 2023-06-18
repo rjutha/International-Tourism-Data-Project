@@ -10,7 +10,7 @@ chloropleth_map <- function(df, ind, year_date, title, name){
            year == year_date) %>%
     mutate(label_v = number(value, big.mark = ",")) %>%
   hcmap(
-    map = 'custom/world-robinson-lowres',
+    map = 'custom/world-robinson-highres',
     download_map_data = TRUE,
     value = "value",
     name = name,
@@ -26,7 +26,13 @@ chloropleth_map <- function(df, ind, year_date, title, name){
         overflow = 'allow'
       )
     ) %>%
-    hc_title(text = title)
+    hc_title(text = title) %>%
+    hc_mapNavigation(
+      enabled = TRUE,
+      enableMouseWheelZoom = TRUE,
+      enableMouseWheelZoom = TRUE,
+      enableDoubleClickZoom = TRUE,
+      buttonOptions = list(verticalAlign = 'bottom'))
 }
 
 arrange_dir <- function(df, order_var, direction){
@@ -79,9 +85,10 @@ pc_bar_graph <- function(df, ind, order_var, direction){
       )
 }
 
-display_table <- function(df, ind){
+display_table <- function(df, ind, cap){
   df %>%
     filter(indicator == ind) %>%
     select(-indicator) %>%
-    datatable(rownames = FALSE)
+    datatable(rownames = FALSE,
+              caption = cap)
 }
