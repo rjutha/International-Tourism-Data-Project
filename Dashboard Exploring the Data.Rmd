@@ -28,7 +28,9 @@ df_short <- read_csv('data/International_Tourism_Dataset_Short.csv')
 Column {.sidebar data-width=250}
 -------------------------------------
 
-BLAH
+"Global tourism suffered its worst year on record in 2020, with international arrivals dropping by 74% according to the latest data from the World Tourism Organization (UNWTO). Destinations worldwide welcomed 1 billion fewer international arrivals in 2020 than in the previous year, due to an unprecedented fall in demand and widespread travel restrictions." -UNWTO 
+
+
 
 Column {.tabset .tabset-fade data-width=500}
 ------------------------------------- 
@@ -72,7 +74,7 @@ Column {.tabset .tabset-fade data-width=250}
 ```{r}
 pc_bar_graph(df,
              'International tourism, number of arrivals',
-             'value',
+             'prev_year_value',
              'desc')
 ```
 
@@ -99,7 +101,7 @@ pc_bar_graph(df,
 Column {.sidebar data-width=250}
 -------------------------------------
 
-BLAH
+Due to the pandemic, the number of people leaving their countries for tourism drastically decreased. People from countries that normally travel in large numbers like the United States, China, and parts of Europe were forced to stay home. Smaller countries that rely on tourism as an essential source of economic growth suffered significantly because of this.
 
 Column {.tabset .tabset-fade data-width=500}
 --------------------------------------
@@ -142,7 +144,7 @@ Column {.tabset .tabset-fade data-width=250}
 ```{r}
 pc_bar_graph(df,
              'International tourism, number of departures',
-             'value',
+             'prev_year_value',
              'desc')
 ```
 
@@ -164,67 +166,10 @@ pc_bar_graph(df,
              'desc')
 ```
 
-
-# Tourism GDP
-
-Column {.sidebar data-width=250}
--------------------------------------
-
-BLAH 3
-
-Column {data-width=350}
--------------------------------------
-
-### 1
-
-```{r}
-  df %>%
-    filter(indicator == 'International tourism, receipts (current US$)',
-         year %in% c(2019,2020)) %>%
-  group_by(year) %>%
-  slice_max(value, n = 10) %>%
-  hchart(
-    'bar',
-    hcaes(x = country,
-          y = value,
-          group = year),
-    pointWidth = 10,
-    groupPadding = 1,
-    pointPadding = 2
-    ) %>%
-  hc_colors(c("#0073C2FF", "#EFC000FF"))
-        
-```
-
-Column {data-width=350}
--------------------------------------
-
-### 2
-
-```{r}
- df %>%
-    filter(indicator == 'International tourism, receipts (current US$)',
-         year %in% c(2019,2020)) %>%
-  group_by(year) %>%
-  slice_max(value, n = 10) %>%
-  hchart(
-    'bar',
-    hcaes(x = country,
-          y = value,
-          group = year),
-    pointWidth = 10,
-    groupPadding = 1,
-    pointPadding = 2
-    ) %>%
-  hc_colors(c("#0073C2FF", "#EFC000FF"))
-```
-
 # Explore the data
 
 Column {.sidebar data-width=250}
 -------------------------------------
-
-Blah 4
 
 Column {.tabset .tabset-fade data-width=375}
 -------------------------------------
@@ -244,19 +189,24 @@ display_table(df_short, 'International tourism, number of departures',
               'Blah Blah Blah World Bank Moment')
 ```
 
-### GDP
-
-```{r}
-display_table(df_short, 'International tourism, receipts (current US$)',
-              'Blah Blah Blah World Bank Moment')
-```
-
 # References
 
 https://www.unwto.org/tourism-statistics/key-tourism-statistics
 
 https://datacatalog.worldbank.org/
 
+https://www.unwto.org/news/2020-worst-year-in-tourism-history-with-1-billion-fewer-international-arrivals
+
 # About Me
 
-We the best Music!
+### About this Project
+
+The goal of this dashboard was to show the decrease in global tourism using choropleth maps.
+
+### About Me
+
+My name is Rahim Jutha. I recently finished my undergraduate education at Simon Fraser University studying Statistics and Data Science. I've made this dashboard to develop my R coding skills and to take a look at an interesting data set revolving around global tourism.
+
+https://github.com/rjutha
+
+https://linkedin.com/in/rahim-jutha

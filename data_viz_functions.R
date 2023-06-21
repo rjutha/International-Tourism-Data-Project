@@ -92,19 +92,3 @@ display_table <- function(df, ind, cap){
     datatable(rownames = FALSE,
               caption = cap)
 }
-
-  # df %>%
-  #   filter(indicator == 'International tourism, receipts (current US$)',
-  #        year %in% c(2019,2020)) %>%
-  # group_by(year) %>%
-  # slice_max(value, n = 20) %>%
-  # hchart(
-  #   'bar',
-  #   hcaes(x = country,
-  #         y = value,
-  #         group = year)
-  #   ) %>%
-  # hc_colors(c("#0073C2FF", "#EFC000FF"))
-  #       
-
-
