@@ -25,14 +25,7 @@ df_short <- read_csv('data/International_Tourism_Dataset_Short.csv')
 
 # Inbound Tourists 
 
-Column {.sidebar data-width=250}
--------------------------------------
-
-"Global tourism suffered its worst year on record in 2020, with international arrivals dropping by 74% according to the latest data from the World Tourism Organization (UNWTO). Destinations worldwide welcomed 1 billion fewer international arrivals in 2020 than in the previous year, due to an unprecedented fall in demand and widespread travel restrictions." -UNWTO 
-
-
-
-Column {.tabset .tabset-fade data-width=500}
+Column {.tabset .tabset-fade data-width=750}
 ------------------------------------- 
 
 ### Inbound Tourists 2020
@@ -98,12 +91,7 @@ pc_bar_graph(df,
 
 # Outbound Tourists
 
-Column {.sidebar data-width=250}
--------------------------------------
-
-Due to the pandemic, the number of people leaving their countries for tourism drastically decreased. People from countries that normally travel in large numbers like the United States, China, and parts of Europe were forced to stay home. Smaller countries that rely on tourism as an essential source of economic growth suffered significantly because of this.
-
-Column {.tabset .tabset-fade data-width=500}
+Column {.tabset .tabset-fade data-width=750}
 --------------------------------------
 
 ### Outbound Tourists in 2020
@@ -168,10 +156,7 @@ pc_bar_graph(df,
 
 # Explore the data
 
-Column {.sidebar data-width=250}
--------------------------------------
-
-Column {.tabset .tabset-fade data-width=375}
+Column {.tabset .tabset-fade data-width=1000}
 -------------------------------------
 
 ### Inbound Tourists
@@ -179,34 +164,22 @@ Column {.tabset .tabset-fade data-width=375}
 ```{r}
 display_table(df_short, 
               'International tourism, number of arrivals',
-              'Blah Blah Blah World Bank Moment')
+              'Data Downloaded form World Bank Open Data')
 ```
 
 ### Outbound Tourists
 
 ```{r}
 display_table(df_short, 'International tourism, number of departures',
-              'Blah Blah Blah World Bank Moment')
+              'Data Downloaded form World Bank Open Data')
 ```
 
 # References
+
+### Resources 
 
 https://www.unwto.org/tourism-statistics/key-tourism-statistics
 
 https://datacatalog.worldbank.org/
 
 https://www.unwto.org/news/2020-worst-year-in-tourism-history-with-1-billion-fewer-international-arrivals
-
-# About Me
-
-### About this Project
-
-The goal of this dashboard was to show the decrease in global tourism using choropleth maps.
-
-### About Me
-
-My name is Rahim Jutha. I recently finished my undergraduate education at Simon Fraser University studying Statistics and Data Science. I've made this dashboard to develop my R coding skills and to take a look at an interesting data set revolving around global tourism.
-
-https://github.com/rjutha
-
-https://linkedin.com/in/rahim-jutha
